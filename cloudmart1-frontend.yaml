@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudmart1-frontend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudmart1-frontend-app
+  template:
+    metadata:
+      labels:
+        app: cloudmart1-frontend-app
+    spec:
+      serviceAccountName: cloudmart1-pod-execution-role
+      containers:
+      - name: cloudmart1-frontend-app
+        image: 061039801823.dkr.ecr.ap-southeast-2.amazonaws.com/cloudmart1-frontend:latest
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudmart1-frontend-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: cloudmart1-frontend-app
+  ports:
+    - protocol: TCP
+      port: 5001
+      targetPort: 5001
